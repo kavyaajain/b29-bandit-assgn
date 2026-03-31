@@ -1,0 +1,183 @@
+ssh banditx@bandit.labs.overthewire.org -p 2220 
+(to start the bandit environment for each level) x=level
+1.	Level 0 – 1
+a.	cd .. then cd bandit0
+b.	ls to check contents of bandit0
+c.	saw readme as the content of it
+d.	cat to read the file
+e.	pass - ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+2.	Level 1 – 2
+a.	cd .. then cd bandit1
+b.	ls to check contents
+c.	cat – does not work as it expects input from keyboard
+d.	so, we use cat ./- 
+e.	pass - 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+3.	Level 2 – 3
+a.	cd.. then cd bandit2
+b.	file name is –spaces in this filename—
+c.	to deal with spaces we enclose file name between double inverted commas “ “ and use ./ to bypass the –
+d.	so command used is cat "./--spaces in this filename--"
+e.	pass - MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+4.	Level 3 – 4
+a.	cd inhere
+b.	ls -a to access all files (including hidden)
+c.	hidden file’s name is …Hiding-From-You
+d.	cat …Hiding-From-You
+e.	pass - 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+5.	Level 4 – 5
+a.	cd inhere
+b.	ls command, we see all file names start with –
+c.	we use file ./* to get info abt all files
+d.	we see -file07 has ASCII text
+e.	cat ./-file07
+f.	pass - 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+6.	Level 5 – 6
+a.	cd inhere
+b.	we see that 17 directories are stored (using ls and file command)
+c.	we use find -type f -size 1033c ! -executable (- type f = file, size 1033c= 1033 bytes)
+d.	required file is ./maybehere07/.file2
+e.	cat ./maybehere07/.file2
+f.	Pass - HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+7.	Level 6 – 7
+a.	 using find / -user bandit7 -group bandit6 -size 33c (/ to run find command on whole server)
+b.	/var/lib/dpkg/info/bandit7.password is the required file
+c.	cat /var/lib/dpkg/info/bandit7.password to read file
+d.	pass - morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+8.	Level 7 – 8
+a.	did cat data.txt (big mistake, way too long of a file it was ☹)
+b.	grep “millionth” data.txt 
+c.	pass - dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+9.	Level 8 – 9
+a.	sort data.txt | uniq -u (sort arranges data alphabetically, uniq -u takes the sorted output and finds the unique line)
+b.	pass - 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+10.	Level 9 – 10
+a.	strings data.txt | grep "=" (strings gives all the human-readable strings present in the file, then the output is piped to grep. we scroll through the few strings to find the pass)
+b.	pass - FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+11.	Level 10 – 11
+a.	Cat data.txt, we see base64 encoded data (not readable)
+b.	base64 -d data.txt (used to decode base64 text)
+c.	pass - dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+12.	Level 11 – 12
+a.	 cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'  (tr is used to ‘translate’, it converts certain letters to other letters. So we use this to rotate letters by 13 positions)
+b.	Pass - 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+13.	Level 12 – 13
+a.	mktemp -d to create a new directory (/tmp/tmp.xOfkMWvdtQ)
+b.	cd /tmp/tmp.xOfkMWvdtQ then cp ~/data.txt . to copy the file data.txt to current directory
+c.	xxd -r data.txt > data (converts hexdump to binary and renames converted file to data)
+d.	file data (tells type of file, we get gzip compressed data type
+e.	then we use mv data data.gz to rename the file with the correct extension to make it work
+f.	gzip -d data.gz decompresses the file
+g.	now we do file data again, this time we get bzip2 compressed data type.
+h.	So we repeat the former steps, just for bzip2 type data - mv data data.bz2 and bzip2 -d data.bz2
+i.	Now we do file data, this time it is gzip compressed data type
+j.	So, mv data data.gz, then gzip -d data.gz
+k.	file data, it is posix tar archive this time
+l.	so, mv data data.tar, then tar xf data.tar
+m.	then we do ls to see what new file has been extracted
+n.	we continue this cycle for a loooooooong time
+o.	finally, when we get a file with ASCII text, we cat it (cat data8)
+p.	pass - FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+14.	Level 13 – 14
+a.	After running ls, we get “HINT  sshkey.private”
+b.	In windows powershell, run scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private .
+c.	Enter the bandit13 pass
+d.	ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220 (logging in using the key)
+e.	cat /etc/bandit_pass/bandit14 (to get the pass)
+f.	pass - MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+15.	Level 14 – 15
+a.	Open windows powershell
+b.	ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220 (login to bandit14)
+c.	nc localhost 30000, then enter the pass of previous level 
+d.	pass - 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo 
+16.	Level 15 – 16
+a.	Open powershell
+b.	ssh bandit15@bandit.labs.overthewire.org -p 2220 (login as bamdit15)
+c.	openssl s_client -connect localhost:30001 (connecting using ssl)
+d.	entering the previous pass
+e.	pass - kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+17.	Level 16 – 17
+a.	ssh bandit16@bandit.labs.overthewire.org -p 2220
+b.	nmap -p 31000-32000 localhost (to see which ports are open)
+c.	nmap -p 31000-32000 -sV localhost (to see if ports are ssl or not)
+d.	we find server 31518 and 31790 to be ssl
+e.	cat /etc/bandit_pass/bandit16 | openssl s_client -quiet -connect localhost:31518 and same for 31790 (which turns out to be correct port)
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
+
+Use cat > key to save this key in a file.
+
+Then enter bandit17 using ssh -i key bandit17@bandit.labs.overthewire.org -p 2220
+
+18.	Level 17-18
+a.	diff passwords.old passwords.new (to find the line different bw both files)
+b.	pass - x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+19.	Level 18-19
+a.	ssh bandit18@bandit.labs.overthewire.org -p 2220 "cat readme" (command is run directly during ssh login so that .bashrc does not execute)
+b.	pass - cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+20.	Level 19-20
+a.	Ls, we see bandit20-do.
+b.	./bandit20-do cat /etc/bandit_pass/bandit20 (to get the pass from file)
+c.	Pass - 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+21.	Level 20-21
+a.	We login as bandit20, then ls, we see a file called suconnect
+b.	echo "0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO " | nc -lvp 1234 & ./suconnect 1234 (we have echoed our previous password into a new netcat listener to which the setuid program connects. Then it sends back the new pass when it receives the previous pass)
+c.	Pass - EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+22.	Level 21-22
+a.	cd /etc/cron.d to go into the cron directory
+b.	then ls, we see a file called cronjob_bandit22
+c.	cat cronjob_bandit22, output is @reboot bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null      	* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
+d.	then we cat the /usr/bin/cronjob_bandit22.sh (which was part of the output)
+e.	we get output cat /usr/bin/cronjob_bandit22.sh		
+#!/bin/bash
+chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+f.	we see that the pass is copied to a file path /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+g.	we cat that file path and get the pass
+h.	pass - tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+23.	Level 22-23
+a.	We follow approach similar to the previous level till we get the file path, however that file path gives us another set of instructions to acquire the pass
+b.	A hashed filename using md5 is created, we need to get the hash to access that file
+c.	We follow the steps and get the file name (echo I am user bandit23 | md5sum | cut -d ' ' -f 1)
+d.	We get a hash
+e.	cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+f.	pass - 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+24.	Level 23-24
+a.	We follow steps similar to prev level, then get a file which says that it runs every file in the directory, and then deletes it after execution
+b.	echo '#!/bin/bash	> /tmp/pass24' > /var/spool/bandit24/foo/script.sh
+c.	chmod +x /var/spool/bandit24/foo/script.sh
+d.	cat /tmp/pass24
+e.	pass - gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+25.	 Level 24-25
+a.	We need to write a loop which produces the password
+b.	#!/bin/bash
+c.	for ((i = 0; i < 10000; i++)); do echo "gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 $(printf '%04d' $i)"done | nc 127.0.0.1 30002 > /tmp/pass25.txt
+d.	cat /tmp/pass25.txt | grep -v "Wrong"
+e.	pass -  iCi86ttT4KSNe1armK
+
+END OF FILE
